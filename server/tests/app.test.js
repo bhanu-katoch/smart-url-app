@@ -1,3 +1,9 @@
+// * supertest is used to test the API endpoints of the application. It allows you to make HTTP requests to the app and assert the responses, without starting a server on a port.
+
+// * jest is used for mock ai,
+
+// * mongodb is run in memory serperately using  "mongodb-memory-server" dependency.
+
 process.env.JWT_SECRET = "test";
 process.env.BASE_URL = "http://short.test";
 jest.mock("../src/ai", () => ({

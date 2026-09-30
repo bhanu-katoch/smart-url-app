@@ -16,7 +16,7 @@ const RESERVED = [
   "assets",
   "static",
 ];
-const h = (fn) => (q, s, n) => fn(q, s, n).catch(n);
+const h = (fn) => (q, s, n) => fn(q, s, n).catch(n); // duck the error handling boilerplate for async route handlers
 const fail = (status, message) => Object.assign(new Error(message), { status });
 const secret = () => process.env.JWT_SECRET || "dev_secret";
 const oid = (id) => new mongoose.Types.ObjectId(id);
@@ -43,6 +43,7 @@ const validUrl = (v) => {
 const short = (p, l) =>
   `${process.env.BASE_URL || "http://localhost:5001"}/${p}/${l}`;
 const dto = (l, p) => ({
+  // data transfer object: only send what the client needs
   id: l._id,
   url: l.originalUrl,
   slug: l.slug,
@@ -97,7 +98,7 @@ r.post(
     const taken = new Set(
       (await Project.find({ slug: { $in: names } }).select("slug")).map(
         (p) => p.slug,
-      ),
+      ), // * set is used for O(1) lookups of taken names .has later in the code
     );
     s.json({
       suggestions: names.map((n) => ({
@@ -108,6 +109,7 @@ r.post(
   }),
 );
 
+// finnaly create the project as choosen by user
 r.post(
   "/projects",
   auth,
@@ -138,6 +140,7 @@ r.get(
       },
     ]);
     const m = Object.fromEntries(agg.map((a) => [a._id, a]));
+    // add links and clicks property in object
     s.json(
       ps.map((p) => ({
         ...p,
@@ -178,6 +181,7 @@ async function uniqueSlug(project, url, avoid = []) {
   return `${avoid[0] || "link"}-${crypto.randomBytes(2).toString("hex")}`;
 }
 
+// get all links in a project
 r.get(
   "/projects/:id/links",
   auth,
@@ -190,7 +194,7 @@ r.get(
     });
   }),
 );
-
+// suggest slugs for a URL in a project, based on the URL and optional theme
 r.post(
   "/projects/:id/links/suggest",
   auth,
@@ -224,6 +228,7 @@ r.post(
     });
   }),
 );
+// create a new link in a project
 r.post(
   "/projects/:id/links",
   auth,
@@ -249,12 +254,14 @@ r.post(
   }),
 );
 
+// find project and link by id, ensuring the link belongs to the user
 const mine = async (q) => {
   const l = await Link.findOne({ _id: q.params.id, owner: q.user.id });
   if (!l) throw fail(404, "Link not found");
   return [l, await Project.findById(l.project)];
 };
 
+// change the existing link's URL or slug, ensuring the new slug is unique in the project
 r.put(
   "/links/:id",
   auth,
@@ -309,7 +316,7 @@ r.get(
     const [tot] = await Link.aggregate([
       { $match: { owner } },
       {
-        $group: { _id: null, links: { $sum: 1 }, clicks: { $sum: "$clicks" } },
+        $group: { _id: null, links: { $sum: 1 }, clicks: { $sum: "$clicks" } },// every link is counted as 1, and every click is summed up
       },
     ]);
     const days = await Link.aggregate([
@@ -333,7 +340,7 @@ r.get(
     const top = await Link.find({ owner })
       .sort("-clicks")
       .limit(5)
-      .populate("project", "slug")
+      .populate("project", "slug")// ? want slug of project
       .lean();
     s.json({
       projects: await Project.countDocuments({ owner }),
