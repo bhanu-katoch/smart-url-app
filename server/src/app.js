@@ -1,7 +1,7 @@
 const express = require('express'), cors = require('cors');
 const { Project, Link } = require('./models');
 const app = express();
-app.use(cors(), express.json());
+app.use(cors({ origin: "http://localhost:5173" }), express.json());
 app.use('/api', require('./api'));
 
 // Redirect + click tracking:  host.com/<project>/<slug>
