@@ -6,7 +6,7 @@ An AI-powered URL shortener that generates **semantic, human-readable URLs** usi
 
 ```text
 Original:
-https://example.com/courses/react-complete-guide
+https://example.com/d/e/1FAIpQLSfTZr7MS1ji7FDrXLNfsQAyeEE6fKrvTPhYQlxHZTcwsVJ6ITYE
 
 Generated:
 https://your-domain.com/learning/react-guide
