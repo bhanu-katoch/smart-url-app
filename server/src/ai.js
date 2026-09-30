@@ -8,8 +8,8 @@ async function ask(prompt) {
   if (!key) return null;
   try {
     const res = await new OpenAI({ apiKey: key }).chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-4o-mini',
-      temperature: 0.9,
+      model: process.env.OPENAI_MODEL || 'gpt-5.6-luna',
+      // temperature: 0.9,`
       response_format: { type: 'json_object' },
       messages: [
         { role: 'system', content: 'Reply ONLY with JSON: {"items":["..."]}' },
@@ -21,8 +21,8 @@ async function ask(prompt) {
 }
 
 // Semantic, theme-based slugs for a URL (falls back to URL words if OpenAI is unavailable)
-async function suggestSlugs(url, n = 5, avoid = []) {
-  const out = await ask(`Suggest ${n} short, memorable, semantic URL slugs (2-4 lowercase words joined by hyphens) that describe the theme of the page at ${url}. Do not use: ${avoid.join(', ') || 'none'}.`);
+async function suggestSlugs(url,theme, n = 5, avoid = []) {
+  const out = await ask(`Suggest ${n} short, memorable, semantic URL slugs (2-4 lowercase words joined by hyphens) that describe the theme of the page at ${url}.Theme : ${theme} Do not use: ${avoid.join(', ') || 'none'}.`);
   if (out && out.length) return out;
   const u = new URL(url);
   const base = clean(u.hostname.replace(/^www\./, '').split('.')[0] + ' ' + u.pathname.split('/').filter(Boolean).slice(0, 2).join(' ')) || 'link';
