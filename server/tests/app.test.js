@@ -54,7 +54,7 @@ describe("auth", () => {
     const res = await request(app)
       .post("/api/auth/login")
       .send({ email: "a@x.com", password: "secret1" });
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
     expect(res.body.user.uid).toBeTruthy();
   });
   test("protected routes need a token", async () => {
