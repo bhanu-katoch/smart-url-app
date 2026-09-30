@@ -1,4 +1,4 @@
-# 🤖 AI-Powered Smart URL Shortener
+# 🤖 AI-Powered Smart URL Shortener `SmartLink`
 
 An AI-powered URL shortener that generates **semantic, human-readable URLs** using OpenAI instead of random short IDs.
 
