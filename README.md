@@ -116,6 +116,10 @@ npm test
 
 Tests cover authentication, URL operations, AI slug generation, duplicate handling, and authorization.
 
+# 🤖 AI-Powered Smart URL Shortener
+
+![Tests](https://github.com/BhanuKatoch/smart-url/actions/workflows/tests.yml/badge.svg)
+
 ## 👨‍💻 Author
 
 **Bhanu Katoch**
