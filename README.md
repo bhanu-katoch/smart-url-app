@@ -116,7 +116,7 @@ npm test
 
 Tests cover authentication, URL operations, AI slug generation, duplicate handling, and authorization.
 
-![Tests](https://github.com/bhanu-katoch/smart-url-app/actions/workflows/tests.yml/badge.svg)
+![Tests](https://github.com/bhanu-katoch/smart-url-app/actions/workflows/test.yml/badge.svg)
 
 ## 👨‍💻 Author
 
