@@ -17,7 +17,7 @@ async function ask(prompt) {
     const res = await new OpenAI({ apiKey: key }).chat.completions.create({
       model: process.env.OPENAI_MODEL || "gpt-5.6-luna",
       // temperature: 0.9,`
-      response_format: { type: "json_object" },
+      response_format: { type: "json_object" }, // json mode, ensure the response is valid JSON
       messages: [
         { role: "system", content: 'Reply ONLY with JSON: {"items":["..."]}' },
         { role: "user", content: prompt },
